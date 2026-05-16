@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beranda</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+<style>
+    :root {
+        --primary-color: #16768a;
+        --primary-darker: #16768a;
+        --primary-lighter: #16768a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f7f8;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* ===== HEADERS ===== */
+.top-header{
+    position:sticky;
+    top:0;
+    left:0;
+    width:100%;
+    height:60px;
+
+    background:#ffffff;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:6px 20px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+
+    z-index:1500;
+
+    transition:all .25s ease;
+}
+
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .header-logo { width: 38px; height: 38px; border-radius: 50%; border: 4px solid var(--primary-color); }
+    .header-title { font-size: 15px; font-weight: 700; color: #333; }
+    .header-sub { font-size: 11px; color: #666; }
+
+    #dynamic-header {
+        position: fixed; top: 0; left: 0; width: 100%;
+        background: rgba(255, 255, 255, 0.95); padding: 10px 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 1000;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.2s ease; display: flex; align-items: center;
+    }
+
+    #dynamic-header.visible { opacity: 1; pointer-events: all; }
+
+    /* ===== WELCOME POPUP ===== */
+    .popup-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); display: none; align-items: center;
+        justify-content: center; z-index: 3000; padding: 20px;
+    }
+
+    .popup-container {
+        position: relative; width: 100%; max-width: 400px;
+        background: #000; border-radius: 15px; overflow: hidden;
+        animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .popup-image { width: 100%; display: block; height: auto; }
+
+    .popup-close-btn {
+        position: absolute; top: 10px; right: 10px; width: 35px; height: 35px;
+        background: rgba(0,0,0,0.5); color: white; border: none;
+        border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; font-size: 20px; cursor: pointer; z-index: 10;
+    }
+
+    .popup-description {
+        position: absolute; bottom: 0; left: 0; width: 100%;
+        padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white; text-align: center; font-size: 16px; font-weight: 500;
+    }
+
+    /* ===== ACCORDEON SMOOTH (PERBAIKAN) ===== */
+    .container{
+    width:90%;
+    max-width:900px;
+    margin:10px auto;
+    padding-top:10px;
+}
+
+    .category {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: var(--primary-lighter);
+        padding: 14px 18px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .category-header.active { background-color: var(--primary-darker); }
+    .category-header span { font-size: 15px; }
+    .category-header .ri-arrow-down-s-line { transition: transform 0.2s; }
+    .category-header.active .ri-arrow-down-s-line { transform: rotate(180deg); }
+
+    .category-content {
+        display: none; /* Kita ganti logic ke display agar instan */
+        background-color: #f9f9f9;
+        padding: 10px 18px 20px;
+    }
+
+    .category-content.open {
+        display: block;
+        animation: slideDown 0.2s ease-out; /* Animasi super singkat agar tidak terasa kasar */
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== SUBMENU LIST ===== */
+    .submenu { width: 100%; margin: 8px 0; }
+    .submenu a {
+        display: block; text-decoration: none; background: #fff;
+        border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        padding: 15px; color: #333; transition: 0.2s;
+        border-left: 4px solid transparent;
+    }
+    .submenu a:active { transform: scale(0.98); background: #f0fafa; }
+    .submenu a:hover { border-left: 4px solid var(--primary-color); }
+
+    .submenu-title { font-weight: 700; font-size: 15px; color: var(--primary-color); margin-bottom: 4px; }
+    .submenu-desc { font-size: 15px; color: #666; line-height: 1.4; }
+
+    .profile-section { text-align: center; margin-bottom: 20px; }
+    .profile-name { font-size: 18px; font-weight: 700; color: #333; }
+    .profile-title { font-size: 15px; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="top-header">
+    <div class="header-left">
+        <img src="https://storage.googleapis.com/infompkpcs/500x500.png" class="header-logo">
+        <div>
+            <div class="header-title">INFOMP</div>
+            <div class="header-sub">Your Information Center</div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="popup-overlay" id="welcomePopup">
+  <div class="popup-container">
+    <button class="popup-close-btn" id="popupCloseBtn"><i class="ri-close-line"></i></button>
+    <img src="https://storage.googleapis.com/infompkpcs/Gambar/campaign.jpg" class="popup-image">
+    <div class="popup-description">MANPOWER KPCS</div>
+  </div>
+</div>
+
+<div class="container">
+    <div class="profile-section">
+        <div class="profile-name">INFOMP KPCS</div>
+        <div class="profile-title">OCR OFFICER PAMA SITE KPCS</div>
+    </div>
+
+<div class="category">
+    <div class="category-header">
+        <span>GROUP LEADER</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu">
+            <a href="https://storage.googleapis.com/infompkpcs/manpower.html" target="_blank">
+                <div class="submenu-title">MANPOWER</div>
+                <div class="submenu-desc">Dashboard manpower.</div>
+            </a>
+        </div>
+        <div class="submenu">
+            <a href="https://storage.googleapis.com/infompkpcs/group-leader.html" target="_blank">
+                <div class="submenu-title">GROUP LEADER</div>
+                <div class="submenu-desc">Dashboard group leader superior.</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>SERVICES</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/lapor-emergency.html"><div class="submenu-title">TRANSPORT</div><div class="submenu-desc">Pengajuan transport emergency kedukaan.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSemUtp5oVI1_8QkzURXLWGTijMzSajyE2MqxvLgvU_NDJRX4Q/viewform"><div class="submenu-title">REQUEST APD</div><div class="submenu-desc">Pengajuan Alat Pelindung Diri.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>ADMINISTRASI</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLScT5cwN_RmK__rYNXoxnmmM8IrcVbdCnC0pmhA_-Z3t4l5DkQ/viewform"><div class="submenu-title">REGISTER BPJS</div><div class="submenu-desc">Pengajuan pendafataran BPJS.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>LAPOR MANPOWER</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://sites.google.com/view/infomp/laporhadir-app" target="_blank"><div class="submenu-title">LAPOR KEHADIRAN</div><div class="submenu-desc">Lapor diri ketidak hadiran.</div></a></div>
+        <div class="submenu"><a href="https://forms.gle/UiNYjuPY9qRDQNfi8" target="_blank"><div class="submenu-title">LAPOR TERLAMBAT INDUKSI</div><div class="submenu-desc">Form Lapor diri terlambat kembali ke site untuk melakukan Induksi datang Cuti.</div></a></div>
+        <div class="submenu"><a href="https://forms.gle/1ujEBmzJf18SyRUQ7" target="_blank"><div class="submenu-title">APD DATANG CUTI</div><div class="submenu-desc">Pelaporan belum terima earplug.</div></a></div>
+        
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>CUTI</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/Rute.html"><div class="submenu-title">DATA RUTE</div><div class="submenu-desc">Data rute penerbangan yang terdata.</div></a></div>
+        <div class="submenu"><a href="https://forms.gle/UMXw6eyX2cK7DfQz8"><div class="submenu-title">UPDATE RUTE</div><div class="submenu-desc">Pengajuan perubahan rute penerbangan.</div></a></div>
+        <div class="submenu"><a href="https://sites.google.com/view/infomp/plancuti-app-gl"><div class="submenu-title">PLAN CUTI GL</div><div class="submenu-desc">Akses dokumen pengumuman cuti per periode.</div></a></div>
+        <div class="submenu"><a href="https://sites.google.com/view/infomp/plancuti-app"><div class="submenu-title">PLAN CUTI OPERATOR</div><div class="submenu-desc">Akses dokumen pengumuman cuti per periode.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>MEDICAL</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/mcu-planner.html"><div class="submenu-title">KALKULATOR MCU</div><div class="submenu-desc">Kalkulator perencanaan Medical Check Up.</div></a></div>
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/MinePermit.html"><div class="submenu-title">DATA KIMPER</div><div class="submenu-desc">Data Mine permit.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeyv-98J_28foBBbWorHPuBXHotCvpHX21NuqqbjAAZDAvb7g/viewform"><div class="submenu-title">SALINAN KTP</div><div class="submenu-desc">Unggah salinan KTP untuk persyaratan pencetakan ID Kimper.</div></a></div>
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/bmi-calc.html"><div class="submenu-title">KALKULATOR BMI</div><div class="submenu-desc">Kalkulator Body Mass Index.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>SETTING ALAT</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://whatsapp.com/channel/0029VaG4JhJDOQIYoX7aJk2r"><div class="submenu-title">INFOMP CHANNEL</div><div class="submenu-desc">Whatsapp Channel Informasi Manpower.</div></a></div>
+        <div class="submenu"><a href="https://sites.google.com/view/infomp/wr-app"><div class="submenu-title">ROUTING SLIP</div><div class="submenu-desc">Akses pengaturan pola kerja induksi dll.</div></a></div>
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/Settingan1.html"><div class="submenu-title">SETTING ALAT DAN ROSTER</div><div class="submenu-desc">Akses dokumen setting operator to unit dan roster kerja.</div></a></div>
+        
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>TRAINING HIGHRISK</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://forms.gle/x2NQT6ii1b6J116Z6"><div class="submenu-title">Pendataan Training Highrisk</div><div class="submenu-desc">Absensi Pengerjaan Training Highrisk.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLScJ3HSaqZqUeSKFgSng214QfKi6d0GgPdR_-v68luCQJHtEVg/viewform"><div class="submenu-title">Dumping Highrisk</div><div class="submenu-desc">Materi pengerjaan Versatility Highrisk.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSd8RF70UcljjTqUXzPm-E_aW-H2IOfpe_FvPF1a-AyQSNwnzw/viewform"><div class="submenu-title">Loading Lumpur</div><div class="submenu-desc">Materi pengerjaan Versatility Loading lumpur.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeiJDutxueoCaRdM9-B8SGbCygTT1uM2fOY_B0g5QmpemhC0g/viewform"><div class="submenu-title">Bekerja Dekat Tebing</div><div class="submenu-desc">Materi pengerjaan Versatility Bekerja Dekat Tebing.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdcypbqUSug7jQ3pD7U8tbFB5zzAnr8Phj5YhwKoYOAlbV-3g/viewform"><div class="submenu-title">Bekerja Dekat Air</div><div class="submenu-desc">Materi pengerjaan Versatility Bekerja Dekat Air.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdgjNeCmyXzbH1ZuhkGFZSUFiPoW78zaetrcBBZGOryHj8k_Q/viewform"><div class="submenu-title">Bekerja Di Ketinggian</div><div class="submenu-desc">Materi pengerjaan Versatility Bekerja Di Ketinggian.</div></a></div>
+        <div class="submenu"><a href="https://docs.google.com/forms/d/e/1FAIpQLSdgjNeCmyXzbH1ZuhkGFZSUFiPoW78zaetrcBBZGOryHj8k_Q/viewform"><div class="submenu-title">Land Clearing</div><div class="submenu-desc">Materi pengerjaan Versatility Land Clearing.</div></a></div>
+        <div class="submenu"><a href="https://chat.whatsapp.com/L4Mp9MpIxCyIn13gQiracA?mode=ems_share_c"><div class="submenu-title">Group Chat Training HR</div><div class="submenu-desc">Group Chat Whatsapp kelas training highrisk.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>SERAH TERIMA OPERATOR</span>
+        <i class="ri-arrow-down-s-line"></i>
+        </div>
+    <div class="category-content">
+        <div class="submenu"><a href="https://forms.gle/WoX9UaGigAu64zKH9"><div class="submenu-title">OPERATOR BARU</div><div class="submenu-desc">Penyerahan Operator Baru dan Mutasian.</div></a></div>
+        <div class="submenu"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=o1cya6sRp0OHCPsX-FwMTSZ9y9CGR05Pj3iZNZivsehUMEVMS0RFSkxGRFNKWU45N1k0OUhESUhKTS4u"><div class="submenu-title">PASCA TRAINING</div><div class="submenu-desc">Penyerahan Operator Pasca Training Praktek (lulus).</div></a></div>
+        <div class="submenu"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=o1cya6sRp0OHCPsX-FwMTSZ9y9CGR05Pj3iZNZivsehURERUOVpXMUIwUlJPWFpLVkJaMEhTTlRGUC4u"><div class="submenu-title">PASCA UNFIT</div><div class="submenu-desc">Penyerahan Operator Pasca Unfit.</div></a></div>
+    </div>
+</div>
+
+<div class="category">
+    <div class="category-header">
+        <span>PUSTAKA PANDUAN</span>
+        <i class="ri-arrow-down-s-line"></i>
+    </div>
+    <div class="category-content">
+        <div class="submenu"><a href="#"><div class="submenu-title">Panduan SAP Fiori</div><div class="submenu-desc">Materi Panduan SAP Fiori.</div></a></div>
+        <div class="submenu"><a href="#"><div class="submenu-title">Panduan SAP Success Factor</div><div class="submenu-desc">Materi Panduan SAP Fiori.</div></a></div>
+        <div class="submenu"><a href="#"><div class="submenu-title">Panduan OPA</div><div class="submenu-desc">Materi Panduan Prosedure OPA.</div></a></div>
+        <div class="submenu"><a href="#"><div class="submenu-title">Panduan Perpanjang ID Kimper</div><div class="submenu-desc">Materi Panduan Perpanjang ID Kimper.</div></a></div>
+        <div class="submenu"><a href="https://storage.googleapis.com/infompkpcs/test.html"><div class="submenu-title">Testing page</div><div class="submenu-desc">Testing page.</div></a></div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ACCORDEON LOGIC - SNAPPY & SMOOTH
+        const headers = document.querySelectorAll('.category-header');
+        headers.forEach(header => {
+            header.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const isActive = this.classList.contains('active');
+
+                // Tutup semua yang lain (opsional, jika ingin satu-satu terbuka)
+                document.querySelectorAll('.category-header').forEach(h => {
+                    if (h !== this) {
+                        h.classList.remove('active');
+                        h.nextElementSibling.classList.remove('open');
+                    }
+                });
+
+                // Toggle menu yang di-klik
+                this.classList.toggle('active');
+                content.classList.toggle('open');
+            });
+        });
+
+        // DYNAMIC HEADER
+        const dynHeader = document.getElementById('dynamic-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) dynHeader.classList.add('visible');
+            else dynHeader.classList.remove('visible');
+        });
+
+        // POPUP
+        const overlay = document.getElementById("welcomePopup");
+        const btnClose = document.getElementById("popupCloseBtn");
+        window.addEventListener("load", () => {
+            overlay.style.display = "flex";
+            document.body.style.overflow = "hidden";
+        });
+        btnClose.addEventListener("click", () => {
+            overlay.style.display = "none";
+            document.body.style.overflow = "";
+        });
+    });
+</script>
+</body>
+</html>
