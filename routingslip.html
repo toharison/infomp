@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INFOMP</title>
+
+<style>
+:root { --primary: #0f7c8c; --bg: #f5f7f8; }
+
+body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: #333; }
+
+/* HEADER & SEARCH BAR (Fixed) */
+.fixed-top { position: fixed; top: 0; width: 100%; z-index: 1000; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.header { padding: 12px 20px; border-bottom: 1px solid #eee; }
+.header-title { font-weight: bold; font-size: 18px; color: #1f8599; }
+.header-sub { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+.top-bar { padding: 10px 20px; background: #fff; display: flex; justify-content: flex-start; }
+.search-box { width: 100%; max-width: 400px; }
+.search-box input { 
+  width: 100%; padding: 12px 15px; border-radius: 25px; border: 1px solid #ddd; 
+  box-sizing: border-box; outline: none; transition: 0.3s; font-size: 14px;
+}
+.search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,124,140,0.1); }
+
+/* CONTENT */
+.container { margin-top: 140px; padding: 15px; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+.status-info { text-align: center; padding: 20px; font-size: 14px; color: #666; }
+
+/* RESULT CARD */
+.result-card { 
+  background: #fff; border-radius: 15px; padding: 18px; margin-bottom: 20px; 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 5px solid var(--primary);
+}
+.card-header { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #f5f5f5; }
+.card-name { font-weight: bold; font-size: 16px; color: #222; }
+.card-nrp { font-size: 13px; color: #666; }
+
+.result-row { 
+  display: grid; grid-template-columns: 35% 10px 1fr; padding: 6px 0; 
+  border-bottom: 1px dashed #f0f0f0; font-size: 13px; align-items: center;
+}
+.result-label { color: #777; font-weight: 500; }
+.result-value { font-weight: 600; color: #444; }
+
+/* MOBILE ADJUSTMENT */
+@media(max-width: 600px) {
+  .top-bar { justify-content: center; }
+  .container { margin-top: 150px; }
+  .result-row { grid-template-columns: 40% 10px 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="fixed-top">
+  <div class="header">
+    <div class="header-title">INFOMP</div>
+    <div class="header-sub">Your Information Center</div>
+  </div>
+  <div class="top-bar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Ketik nama atau nrp..." autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="statusInfo" class="status-info">⏳ Loading...</div>
+  <div id="resultContainer"></div>
+</div>
+
+<script>
+let allData = [];
+
+// Load data otomatis saat halaman dibuka
+window.onload = loadData;
+
+function loadData() {
+  const status = document.getElementById("statusInfo");
+  google.script.run.withSuccessHandler(data => {
+    allData = data || [];
+    status.innerHTML = "✅ Data siap.";
+  }).getTableData();
+}
+
+// Logika Pencarian
+// Logika Pencarian
+document.getElementById("searchInput").addEventListener("input", function() {
+  const keyword = this.value.toLowerCase();
+  const container = document.getElementById("resultContainer");
+  const status = document.getElementById("statusInfo");
+
+  if (keyword.length < 2) {
+    container.innerHTML = "";
+    status.style.display = "block";
+    status.innerHTML = "✅ Data siap.";
+    return;
+  }
+
+  status.style.display = "none";
+  
+  // Filter data berdasarkan NRP atau Nama
+  // Karena allData sudah di-sort di server, hasil filter otomatis mengikuti urutan tersebut
+  const filtered = allData.filter(d => 
+    (d.nrp.toString() + d.nama.toLowerCase()).includes(keyword)
+  );
+
+  renderResult(filtered);
+});
+
+function renderResult(data) {
+  const container = document.getElementById("resultContainer");
+  
+  if (data.length === 0) {
+    container.innerHTML = `<div class="status-info">❌ Data tidak ditemukan</div>`;
+    return;
+  }
+
+  let html = "";
+  data.forEach(d => {
+    // Fungsi internal untuk menambah hari berdasarkan Tgl Induksi
+    const getFutureDate = (baseDateStr, daysToAdd) => {
+      if (!baseDateStr || baseDateStr === "-") return "-";
+      
+      // Pecah DD/MM/YY
+      const parts = baseDateStr.split('/');
+      let year = parts[2];
+      if (year.length === 2) year = "20" + year;
+      
+      const date = new Date(year, parts[1] - 1, parts[0]);
+      date.setDate(date.getDate() + daysToAdd); // Tambah jumlah hari
+      
+      // Format kembali ke DD/MM/YYYY
+      const dd = String(date.getDate()).padStart(2, '0');
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      
+      return `${dd}/${mm}/${yyyy}`;
+    };
+
+    html += `
+    <div class="result-card">
+      <div class="card-header">
+        <div class="card-name">${d.nama}</div>
+        <div class="card-nrp">NRP: ${d.nrp} | DEPT: ${d.dept}</div>
+      </div>
+      ${row("TGL ROUTING", d.induksi)}
+      ${row("VERSATILITY", d.versatility)}
+      ${row("HARI KE", d.shiftInduksi)}
+      
+      <div style="margin:10px 0; border-top:1px solid #eee; padding-top:10px; font-weight:bold; font-size:11px; color:var(--primary);">PANDUAN ROSTER:</div>
+      
+      ${row(getFutureDate(d.induksi, 1) + " (H+1)", d.h1)}
+      ${row(getFutureDate(d.induksi, 2) + " (H+2)", d.h2)}
+      ${row(getFutureDate(d.induksi, 3) + " (H+3)", d.h3)}
+      ${row(getFutureDate(d.induksi, 4) + " (H+4)", d.h4)}
+      ${row(getFutureDate(d.induksi, 5) + " (H+5)", d.h5)}
+      ${row(getFutureDate(d.induksi, 6) + " (H+6)", d.h6)}
+      
+      <div style="margin-top:10px;"></div>
+      ${row("SET", d.set)}
+      ${row("BANDARA", d.bandara)}
+      ${row("KLOTER", d.kloter)}
+      ${row("KETERANGAN", d.keterangan)}
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function row(label, value) {
+  return `
+  <div class="result-row">
+    <div class="result-label">${label}</div>
+    <div>:</div>
+    <div class="result-value">${value || "-"}</div>
+  </div>`;
+}
+
+// Auto Refresh setiap 15 menit
+setInterval(loadData, 900000);
+</script>
+
+</body>
+</html>
