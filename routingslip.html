@@ -63,7 +63,7 @@ body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(-
   </div>
   <div class="top-bar">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Ketik nama atau nrp..." autocomplete="off">
+      <input type="text" id="searchInput" placeholder="Cari Nama atau NRP..." autocomplete="off">
     </div>
   </div>
 </div>
@@ -83,7 +83,7 @@ function loadData() {
   const status = document.getElementById("statusInfo");
   google.script.run.withSuccessHandler(data => {
     allData = data || [];
-    status.innerHTML = "✅ Data siap.";
+    status.innerHTML = "✅ Data siap. Silahkan cari berdasarkan Nama/NRP.";
   }).getTableData();
 }
 
@@ -97,7 +97,7 @@ document.getElementById("searchInput").addEventListener("input", function() {
   if (keyword.length < 2) {
     container.innerHTML = "";
     status.style.display = "block";
-    status.innerHTML = "✅ Data siap.";
+    status.innerHTML = "✅ Data siap. Silahkan cari berdasarkan Nama/NRP.";
     return;
   }
 
