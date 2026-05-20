@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lapor Tiket Belum Tersedia</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.section-title{
+    margin-top:30px;
+    margin-bottom:10px;
+    font-size:18px;
+    font-weight:bold;
+    color:#00796B;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+    font-size:14px;
+}
+
+textarea{
+    height:120px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00796B;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#00695C;
+}
+
+.hidden{
+    display:none;
+}
+
+.success-message{
+    text-align:center;
+    background:#E8F5E9;
+    color:#2E7D32;
+    padding:20px;
+    border-radius:10px;
+    font-size:16px;
+    margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>FORM LAPOR TIKET</h2>
+
+<form id="travelForm">
+
+<div class="form-group">
+<label>NRP</label>
+<input type="text" name="nrp" required>
+</div>
+
+<div class="form-group">
+<label>NAMA</label>
+<input type="text" name="nama" required>
+</div>
+
+<div class="form-group">
+<label>DEPT</label>
+
+<select name="dept" required>
+
+<option value="">Pilih Departemen</option>
+
+<option>SCSR</option>
+<option>SDBO</option>
+<option>SENG</option>
+<option>SFIN</option>
+<option>SGSD</option>
+<option>SHCA</option>
+<option>SINS</option>
+<option>SLOG</option>
+<option>SMHR</option>
+<option>SMIO</option>
+<option>SOPT</option>
+<option>SPCO</option>
+<option>SPIT</option>
+<option>SPL1</option>
+<option>SPL2</option>
+<option>SPL3</option>
+<option>SPL4</option>
+<option>SPMG</option>
+<option>SPR1</option>
+<option>SPR2</option>
+<option>SPR3</option>
+<option>SPR4</option>
+<option>SPR5</option>
+<option>SPT2</option>
+<option>SSHE</option>
+<option>STYR</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>DOMISILI</label>
+
+<select name="domisili" required>
+<option value="">Pilih</option>
+<option>MESS</option>
+<option>NON MESS</option>
+</select>
+
+</div>
+
+<div class="form-group">
+<label>PHONE</label>
+<input type="text" name="phone" required>
+</div>
+
+<div class="form-group">
+<label>TIKET BERANGKAT</label>
+<input type="date" name="tiket_berangkat" required>
+</div>
+
+<div class="form-group">
+<label>RUTE BERANGKAT</label>
+
+<select name="rute_berangkat" required>
+
+<option value="">Pilih Rute</option>
+
+<option>BPN-BDJ (BANJARMASIN)</option>
+<option>BPN-CGK (JAKARTA)</option>
+<option>BPN-DJB (JAMBI)</option>
+<option>BPN-DPS (DENPASAR)</option>
+<option>BPN-KNO (KUALA NAMU)</option>
+<option>BPN-LOP (LOMBOK)</option>
+<option>BPN-PKU (PEKAN BARU)</option>
+<option>BPN-SRG (SEMARANG)</option>
+<option>BPN-SUB (SURABAYA)</option>
+<option>BPN-TKG (TANJUNG KARANG)</option>
+<option>BPN-TRT (TORAJA)</option>
+<option>BPN-UPG (UJUNG PANDANG)</option>
+<option>BPN-YIA (YOGYAKARTA)</option>
+<option>AAP-CGK (CENGKARENG)</option>
+<option>AAP-YIA (YOGYAKARTA)</option>
+<option>AAP-SUB (SURABAYA)</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>TIKET KEMBALI</label>
+<input type="date" name="tiket_kembali" required>
+</div>
+
+<div class="form-group">
+<label>RUTE KEMBALI</label>
+
+<select name="rute_kembali" required>
+
+<option value="">Pilih Rute</option>
+
+<option>BDJ-BPN (BANJARMASIN)</option>
+<option>CGK-BPN (JAKARTA)</option>
+<option>DJB-BPN (JAMBI)</option>
+<option>DPS-BPN (DENPASAR)</option>
+<option>KNO-BPN (MEDAN)</option>
+<option>LOP-BPN (LOMBOK)</option>
+<option>PKU-BPN (PEKAN BARU)</option>
+<option>SRG-BPN (SEMARANG)</option>
+<option>SUB-BPN (SURABAYA)</option>
+<option>TKG-BPN (LAMPUNG)</option>
+<option>TRT-BPN (TORAJA)</option>
+<option>UPG-BPN (MAKASSAR)</option>
+<option>YIA-BPN (YOGYAKARTA)</option>
+<option>CGK-AAP (JAKARTA)</option>
+<option>YIA-AAP (YOGYAKARTA)</option>
+<option>SUB-AAP (SURABAYA)</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>STATUS CUTI/TRAINING</label>
+
+<select name="status_cuti" required>
+
+<option value="">Pilih</option>
+
+<option>SENDIRI</option>
+<option>TRAINING</option>
+<option>MEMBAWA KELUARGA KE SITE</option>
+<option>MENGEMBALIKAN KELUARGA</option>
+<option>CUTI KELUARGA</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>CATATAN</label>
+<textarea name="catatan"></textarea>
+</div>
+
+<div id="keluargaSection" class="hidden">
+
+    <div class="section-title">
+    Anggota Keluarga
+    </div>
+
+    <div class="form-group">
+    <label>NAMA ISTRI</label>
+    <input type="text" name="nama_istri">
+    </div>
+
+    <div class="form-group">
+    <label>USIA ISTRI</label>
+    <input type="number" name="usia_istri">
+    </div>
+
+    <div class="form-group">
+
+        <label>Jumlah Anak</label>
+
+        <select id="jumlahAnak">
+
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+
+        </select>
+
+    </div>
+
+    <div id="anakContainer"></div>
+
+</div>
+
+<button type="submit" id="submitBtn">
+SUBMIT
+</button>
+
+</form>
+
+<div id="successBox" class="success-message hidden">
+Data telah berhasil dikirim, pantau hasil pelaporan pada laman Respon GS. Terima kasih.
+</div>
+
+</div>
+
+<script>
+
+/*
+====================================
+SHOW / HIDE FORM KELUARGA
+====================================
+*/
+
+const statusCuti = document.querySelector(
+    'select[name="status_cuti"]'
+);
+
+const keluargaSection = document.getElementById(
+    "keluargaSection"
+);
+
+const anakContainer = document.getElementById(
+    "anakContainer"
+);
+
+statusCuti.addEventListener("change", function(){
+
+    if(
+        this.value === "SENDIRI" ||
+        this.value === "TRAINING"
+    ){
+
+        keluargaSection.classList.add("hidden");
+
+        document.getElementById("jumlahAnak").value = "0";
+
+        anakContainer.innerHTML = "";
+
+    }else{
+
+        keluargaSection.classList.remove("hidden");
+
+    }
+
+});
+
+/*
+====================================
+SCRIPT URL
+====================================
+*/
+
+const scriptURL =
+"https://script.google.com/macros/s/AKfycbwbT0O_Giqmh8lEitpyCLhhme49wm39ex0KnJ9Z_MxVU-dS8jFtoFxcM6kVwp4eIdRdXA/exec";
+
+/*
+====================================
+DINAMIS JUMLAH ANAK
+====================================
+*/
+
+const jumlahAnak = document.getElementById(
+    "jumlahAnak"
+);
+
+jumlahAnak.addEventListener("change", function(){
+
+    anakContainer.innerHTML = "";
+
+    const jumlah = parseInt(this.value);
+
+    for(let i=1; i<=jumlah; i++){
+
+        anakContainer.innerHTML += `
+
+        <div class="form-group">
+            <label>NAMA ANAK ${i}</label>
+            <input type="text" name="nama_anak_${i}">
+        </div>
+
+        <div class="form-group">
+            <label>USIA ANAK ${i}</label>
+            <input type="number" name="usia_anak_${i}">
+        </div>
+
+        `;
+    }
+
+});
+
+/*
+====================================
+SUBMIT FORM
+====================================
+*/
+
+document.getElementById("travelForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const form = e.target;
+
+    const formData = new FormData(form);
+
+    let data = {};
+
+    formData.forEach((value,key)=>{
+
+        data[key] = value.trim();
+
+    });
+
+    /*
+    ====================================
+    VALIDASI FIELD WAJIB
+    ====================================
+    */
+
+    const requiredFields = [
+
+        "nrp",
+        "nama",
+        "dept",
+        "domisili",
+        "phone",
+
+        "tiket_berangkat",
+        "rute_berangkat",
+
+        "tiket_kembali",
+        "rute_kembali",
+
+        "status_cuti"
+
+    ];
+
+    for(let field of requiredFields){
+
+        if(!data[field]){
+
+            alert("Semua kolom wajib harus diisi.");
+
+            return;
+        }
+    }
+
+    /*
+    ====================================
+    VALIDASI KELUARGA
+    ====================================
+    */
+
+    if(
+        data.status_cuti !== "SENDIRI" &&
+        data.status_cuti !== "TRAINING"
+    ){
+
+        if(!data.nama_istri){
+
+            alert("Nama istri wajib diisi.");
+
+            return;
+        }
+
+        if(!data.usia_istri){
+
+            alert("Usia istri wajib diisi.");
+
+            return;
+        }
+
+        const jumlahAnakValue = parseInt(
+            document.getElementById("jumlahAnak").value
+        );
+
+        for(let i=1; i<=jumlahAnakValue; i++){
+
+            if(!data[`nama_anak_${i}`]){
+
+                alert(`Nama anak ${i} wajib diisi.`);
+
+                return;
+            }
+
+            if(!data[`usia_anak_${i}`]){
+
+                alert(`Usia anak ${i} wajib diisi.`);
+
+                return;
+            }
+        }
+    }
+
+    /*
+    ====================================
+    SUBMIT DATA
+    ====================================
+    */
+
+    const submitBtn =
+    document.getElementById("submitBtn");
+
+    submitBtn.disabled = true;
+
+    submitBtn.innerText = "Mengirim...";
+
+    try{
+
+        const response = await fetch(scriptURL,{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"text/plain;charset=utf-8"
+            },
+
+            body:JSON.stringify(data)
+
+        });
+
+        const result = await response.json();
+
+        if(result.result === "success"){
+
+            form.style.display = "none";
+
+            document
+            .getElementById("successBox")
+            .classList.remove("hidden");
+
+        }else{
+
+            alert("Gagal mengirim data.");
+
+            submitBtn.disabled = false;
+
+            submitBtn.innerText = "SUBMIT";
+        }
+
+    }catch(error){
+
+        alert("Gagal mengirim data");
+
+        submitBtn.disabled = false;
+
+        submitBtn.innerText = "SUBMIT";
+
+        console.log(error);
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
